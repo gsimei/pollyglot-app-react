@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin: 2rem
 }
 
 .App-logo {
@@ -13,26 +14,61 @@
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+
+
+.input {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: flex-end;
+  padding: 10px; /* Adiciona algum espaço interno */
+  margin-bottom: 10px; /* Adiciona algum espaço externo abaixo da mensagem */
+  border-radius: 2px 10px 10px 10px;
+  background: #65DA65;
+  font-weight: 700;
+  padding-right: 3rem;
 }
 
-.App-link {
-  color: #61dafb;
+.translation {
+  display: flex;
+  justify-content: start;
+  padding: 10px; /* Adiciona algum espaço interno */
+  margin-bottom: 10px; /* Adiciona algum espaço externo abaixo da mensagem */
+  border-radius: 10px 2px 10px 10px;
+  background: #035A9D;
+  font-weight: 700;
+  padding-left: 2rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.svg-inline--fa {
+  color: #65DA65;
+  font-size: 1.2rem;
+}
+
+.input-icon {
+  position: relative;
+}
+
+.input-icon .icon {
+  position: absolute;
+  top: 30%;
+  right: 6%;
+}
+
+.input-icon input {
+  margin-inline: auto;
+  padding: 1rem 5rem;
+  border: 1.5px solid #586E88;
+  border-radius: 10px;
+  background-color: #F5F5F5;
+}
+
+.french-flag,
+.japan-flag,
+.spanish-flag,
+.germany-flag {
+  width: 50px; /* Adjust this value as needed */
+  height: 50px; /* Adjust this value as needed */
+}
+
+.flag-selected {
+  border: 3px solid #035A9D;/* Adjust this value as needed */
 }

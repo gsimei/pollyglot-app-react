@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
+import './App.css';
 
 function App() {
   const [inputText, setInputText] = useState('');
   const [selectedLanguage, setSelectedLanguage] = useState('French');
-  const [translatedText, setTranslatedText] = useState('');
+  const [translatedTexts, setTranslatedTexts] = useState([]);
 
   const handleTranslate = async () => {
     const data = { translation: { text: inputText, language: selectedLanguage } };
@@ -20,34 +23,61 @@ function App() {
       }
 
       const result = await response.json();
-      setTranslatedText(result);
+      setTranslatedTexts([...translatedTexts, { input: inputText, translation: result.translations }]);
+      setInputText('');
     } catch (error) {
       console.error('There has been a problem with your fetch operation:', error);
-      setTranslatedText('Failed to translate');
+      setTranslatedTexts([...translatedTexts, { input: inputText, translation: 'Failed to translate' }]);
+      setInputText('');
     }
   };
 
   return (
     <div className="App">
       <h1>Translator App</h1>
-      <input
-        type="text"
-        value={inputText}
-        onChange={(e) => setInputText(e.target.value)}
-      />
-      <select
-        value={selectedLanguage}
-        onChange={(e) => setSelectedLanguage(e.target.value)}
-      >
-        <option value="French">French</option>
-        <option value="Spanish">Spanish</option>
-        <option value="German">German</option>
-        {/* Add more languages as needed */}
-      </select>
-      <button onClick={handleTranslate}>Translate</button>
+
       <div>
-        {translatedText.translations}
+        {translatedTexts.map((text, index) => (
+          <div key={index} className="message">
+            <p className="input">{text.input}</p>
+            <p className="translation">{text.translation}</p>
+          </div>
+        ))}
       </div>
+      <div className="input-icon">
+        <FontAwesomeIcon icon={faPaperPlane} onClick={handleTranslate} className='icon' />
+        <input
+          type="text"
+          value={inputText}
+          onChange={(e) => setInputText(e.target.value)}
+        />
+      </div>
+      <div className='flags'>
+      <img
+        src="/flag-french.png"
+        alt="French flag"
+        className={`french-flag ${selectedLanguage === 'French' ? 'flag-selected' : ''}`}
+        onClick={() => setSelectedLanguage('French')}
+      />
+      <img
+        src="/flag-spanish.png"
+        alt="Spanish flag"
+        className={`spanish-flag ${selectedLanguage === 'Spanish' ? 'flag-selected' : ''}`}
+        onClick={() => setSelectedLanguage('Spanish')}
+      />
+      <img
+        src="/flag-germany.png"
+        alt="German flag"
+        className={`germany-flag ${selectedLanguage === 'Germany' ? 'flag-selected' : ''}`}
+        onClick={() => setSelectedLanguage('German')}
+      />
+      <img
+        src="/flag-japan.png"
+        alt="German flag"
+        className={`japan-flag ${selectedLanguage === 'Japonese' ? 'flag-selected' : ''}`}
+        onClick={() => setSelectedLanguage('Japonese')}
+      />
+    </div>
     </div>
   );
 }
