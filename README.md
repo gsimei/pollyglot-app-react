@@ -12,5 +12,3 @@ PollyGlot APP is a cutting-edge language translation application developed as pa
 
 George Simei - [Linkedin](https://www.linkedin.com/in/george-simei-04100034)
 
-Project Link: [https://github.com/your_username_/PollyGlot-APP](https://github.com/your_username_/PollyGlot-APP)
-
