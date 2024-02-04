@@ -1,53 +1,22 @@
-import React, { useState, useRef, useEffect } from 'react';
+import './App.css';
+import React from 'react';
+import Flag from './flag';
+import useTranslation from './useTranslations';
+import useScrollToBottom from './useScrollButton';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-regular-svg-icons'
-import './App.css'; 
 
 function App() {
-  const [inputText, setInputText] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState('French');
-  const [translatedTexts, setTranslatedTexts] = useState([]);
+  const { inputText, setInputText, selectedLanguage, setSelectedLanguage, translatedTexts, handleTranslate } = useTranslation('French');
+  const messagesEndRef = useScrollToBottom(translatedTexts);
 
-  const messagesEndRef = useRef(null);
-
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [translatedTexts]);
-
-  const handleTranslate = async () => {
-    const data = { translation: { text: inputText, language: selectedLanguage } };
-
-    try {
-      const response = await fetch('/api/v1/translate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const result = await response.json();
-      setTranslatedTexts([...translatedTexts, { input: inputText, translation: result.translations }]);
-      setInputText('');
-    } catch (error) {
-      console.error('There has been a problem with your fetch operation:', error);
-      setTranslatedTexts([...translatedTexts, { input: inputText, translation: 'Failed to translate' }]);
-      setInputText('');
-    }
-  };
 
   return (
     <div className="App">
       <div className="hero-section">
-        <img src="/vector.png" alt="PollyGlot AI" className="vector-img" />
+        <img src="images/vector.png" alt="PollyGlot AI" className="vector-img" />
         <div className="logo">
-          <img src="/parrot.png" alt="PollyGlot AI" className="parrot-img" />
+          <img src="images/parrot.png" alt="PollyGlot AI" className="parrot-img" />
         </div>
         <div className="txt-content">
           <h1>PollyGlot AI</h1>
@@ -65,9 +34,10 @@ function App() {
                 <p className="translation">{text.translation}</p>
               </div>
             ))}
-            <div ref={messagesEndRef} /> {/* Invisible element at the end of messages */}
+            <div ref={messagesEndRef} /> {}
           </div>
         </div>
+
         <div className="input-container">
           <div className="input-icon">
             <FontAwesomeIcon icon={faPaperPlane} onClick={handleTranslate} className='icon' />
@@ -75,33 +45,19 @@ function App() {
               type="text"
               value={inputText}
               onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  handleTranslate();
+                }
+              }}
             />
           </div>
+
           <div className='flags'>
-            <img
-              src="/flag-french.png"
-              alt="French flag"
-              className={`french-flag ${selectedLanguage === 'French' ? 'flag-selected' : ''}`}
-              onClick={() => setSelectedLanguage('French')}
-            />
-            <img
-              src="/flag-spanish.png"
-              alt="Spanish flag"
-              className={`spanish-flag ${selectedLanguage === 'Spanish' ? 'flag-selected' : ''}`}
-              onClick={() => setSelectedLanguage('Spanish')}
-            />
-            <img
-              src="/flag-germany.png"
-              alt="Germany flag"
-              className={`spanish-flag ${selectedLanguage === 'Germany' ? 'flag-selected' : ''}`}
-              onClick={() => setSelectedLanguage('Germany')}
-            />
-            <img
-              src="/flag-japan.png"
-              alt="Japonese flag"
-              className={`japan-flag ${selectedLanguage === 'Japonese' ? 'flag-selected' : ''}`}
-              onClick={() => setSelectedLanguage('Japonese')}
-            />
+            <Flag src="images/flag-french.png" alt="French flag" selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} language="French" />
+            <Flag src="images/flag-spanish.png" alt="Spanish flag" selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} language="Spanish" />
+            <Flag src="images/flag-united-kingdom.png" alt="United Kingdom flag" selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} language="English" />
+            <Flag src="images/flag-japan.png" alt="Japonese flag" selectedLanguage={selectedLanguage} setSelectedLanguage={setSelectedLanguage} language="Japonese" />
           </div>
         </div>
       </div>
